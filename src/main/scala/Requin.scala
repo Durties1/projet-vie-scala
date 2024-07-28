@@ -9,9 +9,13 @@ final case class Requin(x: Double, y: Double, dx: Double, dy: Double, direction:
     fill = Color.Red
   }
 
-  def moveAndBreed(screenWidth: Double, screenHeight: Double, environment: Environment): (Requin, Option[Requin]) = {
+  def moveAndBreed(screenWidth: Double, screenHeight: Double, environment: Environment): (Option[Requin], Option[Requin]) = {
     val newSBreed = Math.max(0, sBreed - 1)
     val newSEnergy = Math.max(0, sEnergy - 1)
+
+    if (newSEnergy <= 0) {
+      return (None, None) // Shark dies if energy is zero or less
+    }
 
     val (newX, newY, updatedEnergy) = environment.thons.find(thon => Math.abs(thon.x - x) <= dx && Math.abs(thon.y - y) <= dy) match {
       case Some(thon) =>
@@ -28,9 +32,9 @@ final case class Requin(x: Double, y: Double, dx: Double, dy: Double, direction:
     val newRequin = this.copy(x = newX, y = newY, sBreed = newSBreed, sEnergy = updatedEnergy)
 
     if (newSBreed <= 0 && updatedEnergy > 0) {
-      (newRequin.copy(sBreed = 10), Some(newRequin.copy(sBreed = 10)))
+      (Some(newRequin.copy(sBreed = 10)), Some(newRequin.copy(sBreed = 10)))
     } else {
-      (newRequin, None)
+      (Some(newRequin), None)
     }
   }
 

@@ -5,25 +5,25 @@ import scalafx.scene.paint.Color
 import javafx.animation.AnimationTimer
 
 object Main extends JFXApp3 {
-  val gridWidth = 200
-  val gridHeight = 100
-  val cellSize = 5
+  val width = 200
+  val height = 100
+  val size = 7
 
-  val environment = Environment(gridWidth, gridHeight)
+  val environment = Environment(width, height)
 
   def draw(canvas: Canvas, environment: Environment): Unit = {
     val gc = canvas.graphicsContext2D
     gc.fill = Color.White
-    gc.fillRect(0, 0, gridWidth * cellSize, gridHeight * cellSize)
+    gc.fillRect(0, 0, width * size, height * size)
 
     environment.thons.foreach { thon =>
       gc.fill = Color.Blue
-      gc.fillRect(thon.x * cellSize, thon.y * cellSize, cellSize, cellSize)
+      gc.fillRect(thon.x * size, thon.y * size, size, size)
     }
 
     environment.requins.foreach { requin =>
       gc.fill = Color.Red
-      gc.fillRect(requin.x * cellSize, requin.y * cellSize, cellSize, cellSize)
+      gc.fillRect(requin.x * size, requin.y * size, size, size)
     }
   }
 
@@ -44,13 +44,13 @@ object Main extends JFXApp3 {
   }
 
   override def start(): Unit = {
-    val canvas = new Canvas(gridWidth * cellSize, gridHeight * cellSize)
-    val mainScene = new Scene(gridWidth * cellSize, gridHeight * cellSize) {
+    val canvas = new Canvas(width * size, height * size)
+    val mainScene = new Scene(width * size, height * size) {
       content = canvas
     }
 
     stage = new JFXApp3.PrimaryStage {
-      title = "Wator Simulation"
+      title = "Jeu de la vie"
       scene = mainScene
     }
 

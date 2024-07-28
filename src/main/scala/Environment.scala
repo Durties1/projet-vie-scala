@@ -13,10 +13,10 @@ final case class Environment(screenWidth: Double, screenHeight: Double) {
 
     val newRequins = scala.collection.mutable.ListBuffer[Requin]()
 
-    requins.foreach { requin =>
+    requins = requins.flatMap { requin =>
       val (updatedRequin, newRequin) = requin.moveAndBreed(screenWidth, screenHeight, this)
-      requins = requins.map(r => if (r == requin) updatedRequin else r)
-      newRequin.foreach(newRequins += _)
+      updatedRequin.foreach(newRequins += _)
+      newRequin
     }
 
     thons = thons.filterNot(thon => requins.exists(requin => Math.abs(thon.x - requin.x) <= 1.0 && Math.abs(thon.y - requin.y) <= 1.0))
